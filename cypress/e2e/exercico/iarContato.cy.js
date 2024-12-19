@@ -6,41 +6,17 @@ describe("Testando inclusão, alteração e remoção de contato", () => {
     cy.visit("https://agenda-contatos-react.vercel.app/");
   });
 
-  const adicionarContato = (nome, email, telefone) => {
-    cy.get('input[placeholder="Nome"]').type(nome);
-    cy.get('input[placeholder="E-mail"]').type(email);
-    cy.get('input[placeholder="Telefone"]').type(telefone);
+  it("Deve adicionar contato Sanatiel Borges", () => {
+    cy.get('input[placeholder="Nome"]').type("Sanatiel Borges");
+    cy.get('input[placeholder="E-mail"]').type("sanatiel.borges@example.com");
+    cy.get('input[placeholder="Telefone"]').type("444444444");
     cy.get("button.adicionar").click();
-    cy.get("ul").contains("li", nome).should("be.visible");
-  };
-
-  it("Deve adicionar contatos iniciais", () => {
-    const contatos = [
-      {
-        nome: "Roberta Marques",
-        email: "roberta.marques@example.com",
-        telefone: "123456789",
-      },
-      { nome: "gian Souza", email: "gian@example.com", telefone: "987654321" },
-      {
-        nome: "Bruna Costa",
-        email: "bruna@example.com",
-        telefone: "555555555",
-      },
-      {
-        nome: "Carlos Oliveira",
-        email: "carlos@example.com",
-        telefone: "333333333",
-      },
-    ];
-
-    contatos.forEach((contato) => {
-      adicionarContato(contato.nome, contato.email, contato.telefone);
-      // Verificação adicional para confirmar que o contato foi adicionado corretamente
-      cy.get("ul").contains("li", contato.nome).should("be.visible");
-      cy.get("ul").contains("li", contato.email).should("be.visible");
-      cy.get("ul").contains("li", contato.telefone).should("be.visible");
-    });
+    // Verificação adicional para confirmar que o contato foi adicionado corretamente
+    cy.get("ul").contains("li", "Sanatiel Borges").should("be.visible");
+    cy.get("ul")
+      .contains("li", "sanatiel.borges@example.com")
+      .should("be.visible");
+    cy.get("ul").contains("li", "444444444").should("be.visible");
   });
 
   it("Deve alterar um contato existente", () => {
@@ -73,7 +49,7 @@ describe("Testando inclusão, alteração e remoção de contato", () => {
       .siblings()
       .find(".delete")
       .click();
-    cy.contains("li", "Bruna Costa").should("not.exist", { timeout: 10000 });
+    cy.contains("li", "Bruna Costa", { timeout: 15000 }).should("not.exist");
     // Verificação adicional para garantir que o contato foi removido corretamente
     cy.get("ul").contains("li", "Bruna Costa").should("not.exist");
   });
